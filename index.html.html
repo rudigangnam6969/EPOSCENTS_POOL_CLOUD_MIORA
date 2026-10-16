@@ -1,0 +1,388 @@
+<!doctype html>
+<html lang="id">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>EPO STUDIO_POOL ACCOUNT — MIORA V.01</title>
+<style>
+    :root {
+        --bg-main: #0b0f19;
+        --bg-card: #111827;
+        --bg-input: #1f2937;
+        --border-color: #374151;
+        --text-main: #f3f4f6;
+        --text-muted: #9ca3af;
+        --accent-yellow: #facc15;
+        --accent-blue: #3b82f6;
+        --accent-yellow-hover: #eab308;
+    }
+    
+    * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Inter', -apple-system, sans-serif; }
+    body { background-color: var(--bg-main); color: var(--text-main); font-size: 14px; line-height: 1.5; }
+    .wrap { max-width: 1200px; margin: 0 auto; padding: 2rem; }
+    
+    header { display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 2rem; border-bottom: 1px solid var(--border-color); padding-bottom: 1.5rem; }
+    .eyebrow { font-size: 0.75rem; font-weight: 700; color: var(--accent-yellow); letter-spacing: 0.05em; margin-bottom: 0.5rem; }
+    h1 { font-size: 1.8rem; font-weight: 800; margin-bottom: 0.25rem; }
+    header p { color: var(--text-muted); font-size: 0.9rem; }
+    
+    .header-badges { display: flex; gap: 0.5rem; }
+    .pill { background: #374151; color: #d1d5db; padding: 0.25rem 0.75rem; border-radius: 999px; font-size: 0.75rem; font-weight: 600; }
+    .pill.blue { background: rgba(59, 130, 246, 0.2); color: #60a5fa; border: 1px solid rgba(59,130,246,0.4); }
+    .pill.yellow { background: rgba(250, 204, 21, 0.2); color: #fde047; border: 1px solid rgba(250,204,21,0.4); }
+
+    .tabs { display: flex; gap: 0.5rem; margin-bottom: 2rem; border-bottom: 1px solid var(--border-color); }
+    .tab { background: transparent; border: none; color: var(--text-muted); padding: 0.75rem 1.5rem; font-weight: 600; cursor: pointer; border-bottom: 2px solid transparent; transition: all 0.2s; }
+    .tab:hover { color: var(--text-main); }
+    .tab.active { color: var(--accent-yellow); border-bottom-color: var(--accent-yellow); }
+    .badge { background: var(--accent-blue); color: white; padding: 0.1rem 0.4rem; border-radius: 99px; font-size: 0.7rem; margin-left: 0.5rem; }
+
+    .tabpanel { display: none; animation: fadeIn 0.3s; }
+    .tabpanel.active { display: block; }
+    @keyframes fadeIn { from { opacity: 0; transform: translateY(5px); } to { opacity: 1; transform: translateY(0); } }
+
+    .panel-head { display: flex; justify-content: space-between; align-items: flex-end; margin-bottom: 1.5rem; }
+    .panel-head h2 { font-size: 1.25rem; font-weight: 700; margin-bottom: 0.25rem; }
+    .panel-head p { color: var(--text-muted); font-size: 0.85rem; }
+    .limit.blue { color: var(--accent-blue); font-size: 0.75rem; background: rgba(59,130,246,0.1); padding: 0.2rem 0.5rem; border-radius: 4px; margin-left: 0.5rem; }
+
+    .grid2 { display: grid; grid-template-columns: 1fr 1fr; gap: 1.5rem; }
+    .card { background: var(--bg-card); border: 1px solid var(--border-color); border-radius: 0.75rem; padding: 1.5rem; box-shadow: 0 4px 6px -1px rgba(0,0,0,0.1); }
+    .card h3 { font-size: 1rem; margin-bottom: 1.25rem; border-bottom: 1px solid var(--border-color); padding-bottom: 0.75rem; }
+    
+    label { display: block; margin-bottom: 1rem; font-size: 0.85rem; font-weight: 500; color: var(--text-muted); }
+    input, select, textarea { width: 100%; background: var(--bg-input); border: 1px solid var(--border-color); color: var(--text-main); padding: 0.75rem; border-radius: 0.5rem; margin-top: 0.4rem; font-size: 0.9rem; outline: none; transition: border 0.2s; }
+    input:focus, select:focus, textarea:focus { border-color: var(--accent-yellow); }
+    input[type="file"] { padding: 0.5rem; font-size: 0.8rem; }
+    
+    .btn { padding: 0.75rem 1.5rem; border-radius: 0.5rem; font-weight: 600; cursor: pointer; transition: all 0.2s; border: none; font-size: 0.9rem; display: inline-flex; align-items: center; justify-content: center; width: 100%; }
+    .btn.primary { background: var(--accent-yellow); color: #000; }
+    .btn.primary:hover { background: var(--accent-yellow-hover); }
+    .btn.ghost { background: transparent; border: 1px solid var(--border-color); color: var(--text-main); width: auto; }
+    .btn.ghost:hover { background: var(--bg-input); }
+
+    .stats { display: flex; gap: 1rem; margin-bottom: 1.5rem; }
+    .stats > div { flex: 1; background: var(--bg-input); padding: 1rem; border-radius: 0.5rem; text-align: center; border: 1px solid var(--border-color); }
+    .stats b { display: block; font-size: 1.5rem; color: var(--accent-yellow); }
+    .stats span { font-size: 0.75rem; color: var(--text-muted); text-transform: uppercase; letter-spacing: 0.05em; }
+
+    .run-grid { display: grid; grid-template-columns: 2fr 1fr; gap: 1.5rem; }
+    .dynamicInputs { display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; margin-bottom: 1rem; }
+    .dynamicInputs .full-width { grid-column: span 2; }
+    
+    .resultcard { display: flex; flex-direction: column; }
+    .selected { background: var(--bg-input); padding: 1rem; border-radius: 0.5rem; margin-bottom: 1rem; border: 1px dashed var(--border-color); }
+    .selected span { display: block; font-size: 0.7rem; color: var(--text-muted); margin-bottom: 0.2rem; }
+    .selected b { display: block; font-size: 0.9rem; color: var(--accent-yellow); margin-bottom: 0.8rem; }
+    .selected b:last-child { margin-bottom: 0; }
+    
+    .status { padding: 1rem; background: rgba(59, 130, 246, 0.1); border: 1px solid rgba(59, 130, 246, 0.3); border-radius: 0.5rem; color: #60a5fa; font-weight: 500; font-family: monospace; display: flex; align-items: center; gap: 0.5rem; margin-bottom: 1rem; }
+    .dot { width: 8px; height: 8px; background: #60a5fa; border-radius: 50%; box-shadow: 0 0 8px #60a5fa; }
+    
+    .cost { display: flex; justify-content: space-between; border-top: 1px solid var(--border-color); padding-top: 1rem; margin-top: auto; }
+    .cost div { text-align: center; }
+    .cost span { display: block; font-size: 0.7rem; color: var(--text-muted); }
+    .cost b { font-size: 1rem; color: var(--text-main); font-family: monospace; }
+</style>
+</head>
+<body>
+<div class="wrap">
+    <header>
+        <div>
+            <div class="eyebrow">EPO STUDIO_POOL • MIORA BYOK • V.01 LOCAL HOST</div>
+            <h1>EPO STUDIO_POOL ACCOUNT</h1>
+            <p>Bring Your Own Key — local multi-account pool, fixed Miora AI App, dan independent task monitor.</p>
+        </div>
+        <div class="header-badges">
+            <span class="pill">MIORA EDITION</span>
+            <span class="pill blue">MAX 50 ACCOUNTS</span>
+        </div>
+    </header>
+
+    <nav class="tabs">
+        <button class="tab active" onclick="switchTab('accounts', event)">① ACCOUNT POOL</button>
+        <button class="tab" onclick="switchTab('runner', event)">② RUNNER GENERATE</button>
+        <button class="tab" onclick="switchTab('monitor', event)">③ TASK MONITOR <span class="badge">0</span></button>
+        <button class="tab" onclick="switchTab('admin', event)">④ ADMIN</button>
+    </nav>
+
+    <!-- SECTION 1: ACCOUNT POOL -->
+    <section id="accounts" class="tabpanel active">
+        <div class="panel-head">
+            <div>
+                <h2>Account Pool <span class="limit blue">BYOK / 50 MAX</span></h2>
+                <p>Masukkan Refresh Token Miora (def502...). Token ditukar ke JWT otomatis saat generate.</p>
+            </div>
+            <button class="btn ghost">↻ Sync Credits</button>
+        </div>
+        <div class="grid2">
+            <div class="card formcard">
+                <h3>+ Tambah Akun Miora</h3>
+                <label>Nama akun / label
+                    <input placeholder="Miora Studio 01">
+                </label>
+                <label>Refresh Token (def502...)
+                    <input type="password" id="miora-token" placeholder="Paste Refresh Token Miora">
+                </label>
+                <button class="btn primary">VERIFY + TAMBAH</button>
+            </div>
+            <div class="card">
+                <div class="stats">
+                    <div><b>1</b><span>Aktif</span></div>
+                    <div><b>556.26</b><span>Credits</span></div>
+                    <div><b>1</b><span>Akun / 50</span></div>
+                </div>
+                <div style="background: var(--bg-input); padding: 1rem; border-radius: 0.5rem; border: 1px solid var(--border-color); display: flex; justify-content: space-between; align-items: center;">
+                    <div>
+                        <div style="font-weight: 600; color: var(--accent-yellow);">Miora Studio 01</div>
+                        <div style="font-size: 0.75rem; color: var(--text-muted); font-family: monospace;">UID: 31799035103365</div>
+                    </div>
+                    <span class="pill yellow">556.26 💎</span>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- SECTION 2: RUNNER GENERATE -->
+    <section id="runner" class="tabpanel">
+        <div class="panel-head">
+            <div>
+                <h2>RUNNER GENERATE</h2>
+                <p>Miora Workflow — pilih AI App, set up node inputs, lalu kirim ke server.</p>
+            </div>
+        </div>
+        <div class="run-grid">
+            <div class="card formcard">
+                <div class="dynamicInputs">
+                    <label class="full-width">AI APP (Workflow)
+                        <select id="workflow-select">
+                            <option value="minimax-h3">MiniMax H3 (Video)</option>
+                            <option value="seed-dance">Seed Dance (TBA)</option>
+                            <option value="kling">Kling (TBA)</option>
+                        </select>
+                    </label>
+                    <label class="full-width">AKUN MIORA
+                        <select>
+                            <option>Miora Studio 01 (556.26 💎)</option>
+                            <option>⚡ AUTO-ROTATE POOL (Smart Queue)</option>
+                        </select>
+                    </label>
+                    <label>Durasi Video
+                        <select id="duration-select">
+                            <option value="5">5 Detik</option>
+                            <option value="8" selected>8 Detik</option>
+                            <option value="10">10 Detik</option>
+                            <option value="15">15 Detik</option>
+                        </select>
+                    </label>
+                    <label>Rasio Aspek
+                        <select id="ratio-select">
+                            <option value="9:16" selected>9:16 (Slim Vertical)</option>
+                            <option value="16:9">16:9 (Panorama)</option>
+                        </select>
+                    </label>
+                    <label class="full-width">Gambar Referensi (Opsional)
+                        <input type="file" accept="image/*">
+                    </label>
+                    <label class="full-width">Prompt Video
+                        <textarea id="prompt-input" rows="3" placeholder="Cinematic tracking shot, neon lights, highly detailed..."></textarea>
+                    </label>
+                </div>
+                <button id="btn-run" class="btn primary" onclick="executeRealGenerate()">🚀 RUN AI APP</button>
+            </div>
+            
+            <div class="card resultcard">
+                <div class="selected">
+                    <span>ACCOUNT TARGET</span>
+                    <b>Miora Studio 01</b>
+                    <span>ACTIVE WORKFLOW</span>
+                    <b id="active-workflow">MiniMax H3</b>
+                </div>
+                <div id="runner-status" class="status">
+                    <span class="dot"></span>
+                    <span id="status-text">Standby.</span>
+                </div>
+                <div class="cost">
+                    <div><span>Credits</span><b id="credit-current">556.26</b></div>
+                    <div><span>Est. Cost</span><b>-15.00</b></div>
+                    <div><span>After</span><b id="credit-after">541.26</b></div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- SECTION 3: TASK MONITOR -->
+    <section id="monitor" class="tabpanel">
+        <div class="panel-head">
+            <div>
+                <h2>Task Monitor <span id="active-tasks-count" class="limit blue">0 active</span></h2>
+                <p>Live tracking untuk semua tugas yang sedang dirender di Miora.</p>
+            </div>
+        </div>
+        <div id="empty-monitor" class="card" style="text-align: center; padding: 3rem; color: var(--text-muted);">
+            <div style="font-size: 2rem; margin-bottom: 1rem;">📭</div>
+            <p>Belum ada tugas yang sedang berjalan.</p>
+        </div>
+        
+        <div id="task-list" style="display: flex; flex-direction: column; gap: 1rem;"></div>
+    </section>
+
+    <!-- SECTION 4: ADMIN -->
+    <section id="admin" class="tabpanel">
+        <div class="panel-head">
+            <div>
+                <h2>Admin & Database</h2>
+                <p>Backup token lokal dan bersihkan cache.</p>
+            </div>
+        </div>
+        <div class="card">
+            <button class="btn ghost" style="margin-bottom: 1rem;">⬇️ Download accounts.json</button><br>
+            <button class="btn ghost" style="color: #ef4444; border-color: rgba(239, 68, 68, 0.3);">🗑️ Reset All Data</button>
+        </div>
+    </section>
+</div>
+
+<script>
+    function switchTab(tabId, event) {
+        document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
+        document.querySelectorAll('.tabpanel').forEach(p => p.classList.remove('active'));
+        
+        if(event) event.currentTarget.classList.add('active');
+        document.getElementById(tabId).classList.add('active');
+    }
+
+    let activeTasks = 0;
+
+    // THE REAL GENERATE FUNCTION (Connecting to server.js)
+    async function executeRealGenerate() {
+        const token = document.getElementById('miora-token').value.trim();
+        const promptVal = document.getElementById('prompt-input').value.trim();
+        const durationVal = document.getElementById('duration-select').value;
+        const ratioVal = document.getElementById('ratio-select').value;
+        const btn = document.getElementById('btn-run');
+        const statusText = document.getElementById('status-text');
+
+        if (!token) {
+            alert("Harap paste Refresh Token (def502...) di tab Account Pool terlebih dahulu!");
+            switchTab('accounts');
+            document.querySelectorAll('.tab')[0].classList.add('active');
+            return;
+        }
+
+        // 1. Ubah UI State ke Loading
+        btn.disabled = true;
+        btn.innerHTML = "⏳ MENGIRIM KE BACKEND...";
+        btn.style.opacity = "0.7";
+        statusText.innerText = "Menghubungi Local Backend & Menukar Token...";
+        document.querySelector('#runner-status .dot').style.backgroundColor = "var(--accent-yellow)";
+        document.querySelector('#runner-status .dot').style.boxShadow = "0 0 8px var(--accent-yellow)";
+
+        try {
+            // 2. Tembak API Lokal (server.js)
+            const response = await fetch('/api/generate', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({
+                    refreshToken: token,
+                    prompt: promptVal || "Cinematic shot",
+                    duration: durationVal,
+                    aspectRatio: ratioVal
+                })
+            });
+
+            const data = await response.json();
+
+            if (response.ok && data.success) {
+                // 3. Sukses! Update UI dan pindah ke Monitor
+                btn.innerHTML = "🚀 RUN AI APP";
+                btn.disabled = false;
+                btn.style.opacity = "1";
+                statusText.innerText = `Task Submitted! Miora Task ID: ${data.taskId}`;
+                document.querySelector('#runner-status .dot').style.backgroundColor = "#10b981";
+                document.querySelector('#runner-status .dot').style.boxShadow = "0 0 8px #10b981";
+
+                createTaskCard(promptVal, data.taskId);
+                
+                // Auto-switch to Monitor Tab
+                switchTab('monitor');
+                document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
+                document.querySelectorAll('.tab')[2].classList.add('active');
+            } else {
+                throw new Error(data.error || "Miora menolak permintaan.");
+            }
+
+        } catch (error) {
+            // Error Handling
+            btn.innerHTML = "🚀 RUN AI APP";
+            btn.disabled = false;
+            btn.style.opacity = "1";
+            statusText.innerText = "Error: " + error.message;
+            document.querySelector('#runner-status .dot').style.backgroundColor = "#ef4444";
+            document.querySelector('#runner-status .dot').style.boxShadow = "0 0 8px #ef4444";
+            alert("Gagal: " + error.message);
+        }
+    }
+
+    function createTaskCard(promptText, realTaskId) {
+        activeTasks++;
+        updateMonitorHeader();
+
+        document.getElementById('empty-monitor').style.display = 'none';
+
+        const taskList = document.getElementById('task-list');
+        const cardHTML = `
+            <div id="${realTaskId}" class="card" style="position: relative; overflow: hidden;">
+                <div style="display: flex; justify-content: space-between; margin-bottom: 0.5rem;">
+                    <div style="font-weight: 600; color: var(--accent-yellow);">MiniMax H3 - Video</div>
+                    <div style="font-size: 0.8rem; font-family: monospace; color: var(--text-muted);">Task ID: ${realTaskId}</div>
+                </div>
+                <p style="font-size: 0.85rem; color: var(--text-muted); margin-bottom: 1rem; font-style: italic;">"${promptText}"</p>
+                
+                <div style="display: flex; justify-content: space-between; font-size: 0.8rem; margin-bottom: 0.5rem;">
+                    <span id="status-${realTaskId}">Queued at Miora...</span>
+                    <span id="pct-${realTaskId}">0%</span>
+                </div>
+                <div style="width: 100%; height: 6px; background: var(--bg-input); border-radius: 3px; overflow: hidden;">
+                    <div id="bar-${realTaskId}" style="width: 0%; height: 100%; background: var(--accent-blue); transition: width 0.5s;"></div>
+                </div>
+            </div>
+        `;
+        
+        taskList.insertAdjacentHTML('afterbegin', cardHTML);
+        simulateProgress(realTaskId); // Sementara menggunakan simulasi progres bar sampai endpoint progres Miora dipasang
+    }
+
+    function simulateProgress(taskId) {
+        let progress = 0;
+        const bar = document.getElementById(`bar-${taskId}`);
+        const pct = document.getElementById(`pct-${taskId}`);
+        const status = document.getElementById(`status-${taskId}`);
+
+        const interval = setInterval(() => {
+            progress += Math.floor(Math.random() * 10) + 5;
+            
+            if (progress >= 100) {
+                progress = 100;
+                clearInterval(interval);
+                bar.style.background = "#10b981"; 
+                status.innerText = "✅ Sent to Miora (Check Canvas)";
+                status.style.color = "#10b981";
+                activeTasks--;
+                updateMonitorHeader();
+            }
+
+            bar.style.width = progress + '%';
+            pct.innerText = progress + '%';
+
+        }, 1500);
+    }
+
+    function updateMonitorHeader() {
+        const badge = document.querySelector('.tab:nth-child(3) .badge');
+        const limitText = document.getElementById('active-tasks-count');
+        badge.innerText = activeTasks;
+        limitText.innerText = activeTasks + ' active';
+    }
+</script>
+</body>
+</html>
